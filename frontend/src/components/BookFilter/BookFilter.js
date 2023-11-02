@@ -1,7 +1,7 @@
 function BookFilter() {
   return (
-    <div className="app-block book-form">
-      <h2>Добавить новую книгу</h2>
+    <div className="app-block book-filter">
+      <h2>Фильтрация и сортировка</h2>
     </div>
   );
 }
