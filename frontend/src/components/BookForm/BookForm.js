@@ -18,6 +18,7 @@ function BookForm() {
         title,
         author,
         id: uuid(),
+        isFavorite: false,
       };
       dispatch(actionCreators.addBook(newBook));
       setTitle('');
@@ -28,7 +29,7 @@ function BookForm() {
   const handleAddRandomBook = () => {
     const randomIndex = Math.floor(Math.random() * booksData.length);
     const randomBook = booksData[randomIndex];
-    const randomBookWithId = { ...randomBook, id: uuid() };
+    const randomBookWithId = { ...randomBook, id: uuid(), isFavorite: false };
     dispatch(actionCreators.addBook(randomBookWithId));
   };
 

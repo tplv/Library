@@ -15,3 +15,12 @@ export function deleteBook(id) {
     },
   };
 }
+
+export function toggleFavorite(id) {
+  return {
+    type: TOGGLE_FAVORITE,
+    payload: {
+      id,
+    },
+  };
+}
