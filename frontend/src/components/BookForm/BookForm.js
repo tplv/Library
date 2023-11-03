@@ -3,6 +3,7 @@ import './BookForm.css';
 import { useDispatch } from 'react-redux';
 import * as actionCreators from '..//../redux/books/actionCreators';
 import { v4 as uuid } from 'uuid';
+import booksData from '../../data/books.json';
 
 function BookForm() {
   const [title, setTitle] = useState('');
@@ -22,6 +23,13 @@ function BookForm() {
       setTitle('');
       setAuthor('');
     }
+  };
+
+  const handleAddRandomBook = () => {
+    const randomIndex = Math.floor(Math.random() * booksData.length);
+    const randomBook = booksData[randomIndex];
+    const randomBookWithId = { ...randomBook, id: uuid() };
+    dispatch(actionCreators.addBook(randomBookWithId));
   };
 
   return (
@@ -47,6 +55,9 @@ function BookForm() {
           ></input>
         </div>
         <button type="submit">Добавить книгу</button>
+        <button type="button" onClick={handleAddRandomBook}>
+          Добавить случайную книгу
+        </button>
       </form>
     </div>
   );
