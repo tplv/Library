@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './BookForm.css';
 import { useDispatch } from 'react-redux';
 import * as actionCreators from '..//../redux/books/actionCreators';
+import { v4 as uuid } from 'uuid';
 
 function BookForm() {
   const [title, setTitle] = useState('');
@@ -15,6 +16,7 @@ function BookForm() {
       const newBook = {
         title,
         author,
+        id: uuid(),
       };
       dispatch(actionCreators.addBook(newBook));
       setTitle('');
