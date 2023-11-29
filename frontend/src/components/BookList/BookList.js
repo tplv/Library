@@ -5,6 +5,7 @@ import { BsBookmarkStar, BsBookmarkStarFill } from 'react-icons/bs';
 import {
   selectTitleFilter,
   selectAuthorFilter,
+  selectOnlyFavoriteFilter,
 } from '../../redux/slices/filterSlice';
 
 function BookList() {
@@ -12,6 +13,7 @@ function BookList() {
   const dispatch = useDispatch();
   const titleFilter = useSelector(selectTitleFilter);
   const authorFilter = useSelector(selectAuthorFilter);
+  const onlyFavorite = useSelector(selectOnlyFavoriteFilter);
 
   const handleDelete = (id) => {
     dispatch(actionCreators.deleteBook(id));
@@ -21,6 +23,21 @@ function BookList() {
     dispatch(actionCreators.toggleFavorite(id));
   };
 
+  const highlightMatch = (text, filter) => {
+    const regex = new RegExp(`(${filter})`, 'gi');
+    if (!filter) return text;
+    return text.split(regex).map((substring, i) => {
+      if (substring.toLowerCase() === filter.toLowerCase()) {
+        return (
+          <span key={i} className="highlight">
+            {substring}
+          </span>
+        );
+      }
+      return substring;
+    });
+  };
+
   const filteredBooks = books.filter((book) => {
     const matchesTitle = book.title
       .toLowerCase()
@@ -28,7 +45,8 @@ function BookList() {
     const matchesAuthor = book.author
       .toLowerCase()
       .includes(authorFilter.toLowerCase());
-    return matchesTitle && matchesAuthor;
+    const matchesFavorite = onlyFavorite ? book.isFavorite : true;
+    return matchesTitle && matchesAuthor && matchesFavorite;
   });
 
   return (
@@ -42,8 +60,10 @@ function BookList() {
             return (
               <li key={book.id}>
                 <div className="book-info">
-                  {++i}. Название: <strong>{book.title}</strong>, Автор:{' '}
-                  <strong>{book.author}</strong>
+                  {++i}. Название:{' '}
+                  <strong>{highlightMatch(book.title, titleFilter)}</strong>,
+                  Автор:{' '}
+                  <strong>{highlightMatch(book.author, authorFilter)}</strong>
                 </div>
                 <div className="book-actions">
                   <div
